@@ -1,7 +1,7 @@
 // ==========================================
 // 🌹 MENSAJE ÚNICO Y ESPECIAL
 // ==========================================
-const mensajeUnico = 'Te deseo una bonita noche que duermas bien y que amanzezcas con energias 9:17pm';
+const mensajeUnico = 'En esta linda mañana solo me queda deserte que te valla de lo mejor y recordarte que eres un chica fasinante y que no dejes que nadie que haga daño a tu corazon y que siempre sigas siendo la chica fasinante que eres. 07:04am';
 
 // ===================================================
 // LÓGICA DE FÍSICAS Y ANIMACIONES (Estrellas, Domo y Pétalos)
@@ -146,16 +146,14 @@ const messageTextContainer = document.getElementById('daily-message-text');
 const modalDateTitle = document.getElementById('modal-date');
 
 bellBtn.addEventListener('click', () => {
-    // Definimos un título romántico y fijo para la carta
     modalDateTitle.innerText = `Un Pensamiento Para Ti`;
     messageTextContainer.innerText = mensajeUnico;
     
-    // Efecto visual de timbrado de campana antes de abrir la carta
     bellBtn.classList.add('ringing');
     
     setTimeout(() => {
         bellBtn.classList.remove('ringing');
-        modal.classList.add('active'); // Muestra la carta
+        modal.classList.add('active');
     }, 600);
 });
 

@@ -22,7 +22,6 @@ body {
     pointer-events: none;
 }
 
-/* Contenedor Principal */
 .main-container {
     position: relative;
     z-index: 10;
@@ -30,8 +29,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 90%; /* Asegura margen en los lados en pantallas chicas */
-    max-width: 600px;
 }
 
 .interactive-area {
@@ -74,7 +71,6 @@ body {
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
     z-index: 20;
     animation: ringIdle 4s ease-in-out infinite alternate;
-    -webkit-tap-highlight-color: transparent; /* Quita el cuadro azul molesto al pulsar en móviles */
 }
 
 .bell-button:hover {
@@ -149,7 +145,7 @@ p {
     padding: 40px 30px;
     border-radius: 20px;
     width: 85%;
-    max-width: 400px;
+    max-width: 450px;
     text-align: center;
     box-shadow: 0 0 40px rgba(212, 175, 55, 0.25), inset 0 0 20px rgba(255, 255, 255, 0.02);
     transform: scale(0.8) translateY(20px);
@@ -196,7 +192,6 @@ p {
     font-size: 16px;
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     transition: all 0.3s ease;
-    -webkit-tap-highlight-color: transparent;
 }
 
 .btn:hover {
@@ -205,54 +200,22 @@ p {
     background: linear-gradient(45deg, #ffe58f, #d4af37);
 }
 
-/* ===================================================
-   📱 AJUSTES EXCLUSIVOS PARA PANTALLAS DE CELULARES
-   =================================================== */
+/* Estilo para la imagen dentro de la carta mágica */
+.imagen-mensaje {
+    display: block;
+    width: 100%;
+    max-width: 280px;      /* Tamaño máximo ideal para que no rompa el diseño */
+    height: auto;          /* Mantiene la proporción original de la foto sin deformarla */
+    margin: 0 auto 25px auto; /* Centra la imagen y le da separación con el botón */
+    border-radius: 12px;   /* Bordes redondeados elegantes */
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Un borde dorado sutil */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra suave para darle profundidad */
+}
+
+/* Ajuste de tamaño extra para pantallas muy pequeñas de celular */
 @media (max-width: 480px) {
-    /* Reduce un poco el domo para que quepa bien a lo alto */
-    .glass-dome {
-        padding: 40px 50px;
-    }
-    
-    .rose-icon {
-        font-size: 90px;
-    }
-
-    /* Ajusta la campana para pantallas táctiles */
-    .bell-button {
-        font-size: 22px;
-        padding: 10px;
-        right: -15px;
-        top: 10px;
-    }
-
-    /* Modifica los textos para que no se amontonen */
-    h1 {
-        font-size: 32px;
-        margin: 10px 0 5px 0;
-    }
-
-    p {
-        font-size: 15px;
-    }
-
-    /* Reducción del tamaño del pergamino de la carta */
-    .modal-box {
-        padding: 30px 20px;
-    }
-
-    .modal-box h3 {
-        font-size: 18px;
-    }
-
-    .parrafo-mensaje {
-        font-size: 17px;
-        line-height: 1.6;
+    .imagen-mensaje {
+        max-width: 200px;  /* Se encoge un poco más en pantallas mini */
         margin-bottom: 20px;
-    }
-
-    .btn {
-        padding: 10px 25px;
-        font-size: 15px;
     }
 }
