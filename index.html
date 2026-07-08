@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Rosa Encantada</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Fondo de estrellas, partículas y pétalos -->
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="main-container">
+        <!-- Contenedor del Domo y la Campana -->
+        <div class="interactive-area">
+            <div class="glass-dome">
+                <div class="rose-icon">🌹</div>
+            </div>
+            
+            <!-- Campanita dorada -->
+            <button class="bell-button" id="bell-btn" title="Descubre tu mensaje de hoy">
+                🔔
+            </button>
+        </div>
+
+        <h1 id="main-title">La rosa de la esperanza</h1>
+        <p>Un mensaje de aliento te espera cada mañana bajo el cristal.</p>
+    </div>
+
+    <!-- Carta Mágica que se abre al tocar la campana -->
+    <div class="modal-overlay" id="message-modal">
+        <div class="modal-box">
+            <div class="sparkles">✨ 🌹 ✨</div>
+            <h3 id="modal-date">Mensaje de Hoy</h3>
+            <p id="daily-message-text" class="parrafo-mensaje">
+                <!-- El mensaje del día se cargará aquí automáticamente con JavaScript -->
+            </p>
+            <button class="btn" id="close-modal">Guardar en el corazón</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
