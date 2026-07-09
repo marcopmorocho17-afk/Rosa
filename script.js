@@ -1,7 +1,7 @@
 // ==========================================
 // 🌹 MENSAJE ÚNICO Y ESPECIAL
 // ==========================================
-const mensajeUnico = 'En esta linda mañana solo me queda deserte que te valla de lo mejor y recordarte que eres un chica fasinante y que no dejes que nadie que haga daño a tu corazon y que siempre sigas siendo la chica fasinante que eres. 07:04am';
+const mensajeUnico = 'Que en este día te vaya súper pero súper bonito. Que recuerdes que no estás sola y, sobre todo, que siempre debes ser tú. No cambies solo porque algún pendejo te lo dijo. Eres perfecta como eres, aunque no te guste el marisco, jajaja. 10:04 a. m';
 
 // ===================================================
 // LÓGICA DE FÍSICAS Y ANIMACIONES (Estrellas, Domo y Pétalos)
