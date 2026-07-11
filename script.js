@@ -1,7 +1,7 @@
 // ==========================================
 // 🌹 MENSAJE ÚNICO Y ESPECIAL
 // ==========================================
-const mensajeUnico = 'Que en este día te vaya súper pero súper bonito. Que recuerdes que no estás sola y, sobre todo, que siempre debes ser tú. No cambies solo porque algún pendejo te lo dijo. Eres perfecta como eres, aunque no te guste el marisco, jajaja. 10:04 a. m';
+const mensajeUnico = 'Buenos diasssssss espero que hoy sea un día de felicidad pasate bien que eres una luz mas caida del sol 🫰💐🍀 suerte en tu día Nat 👑';
 
 // ===================================================
 // LÓGICA DE FÍSICAS Y ANIMACIONES (Estrellas, Domo y Pétalos)
