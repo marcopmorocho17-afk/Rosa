@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Para Mi Rosa Encantada 3D</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Primero cargamos la librería 3D -->
+    <!-- Cargamos la librería tridimensional Three.js -->
     <script src="https://cloudflare.com"></script>
 </head>
 <body>
 
-    <!-- El contenedor donde se creará el universo 3D -->
+    <!-- El lienzo donde se dibuja el entorno interactivo 3D -->
     <div id="canvas-3d-container"></div>
 
     <div class="main-container">
@@ -20,7 +20,7 @@
         </button>
 
         <h1>Para Mi Rosa Encantada</h1>
-        <p class="instruccion">Toca y arrastra para girar el domo</p>
+        <p class="instruccion">Gira a la derecha para ver el sol, a la izquierda para encender la noche</p>
     </div>
 
     <!-- Carta Mágica con tu frase e imagen -->
@@ -29,17 +29,17 @@
             <div class="sparkles">✨ 🌹 ✨</div>
             <h3 id="modal-date">Un Pensamiento Para Ti</h3>
             <p id="daily-message-text" class="parrafo-mensaje">
-                <!-- Se carga con JS -->
+                <!-- Se carga automáticamente con JavaScript -->
             </p>
             
-            <!-- IMPORTANTE: Cambia "tu-imagen.jpg" por el nombre exacto de tu archivo en GitHub, respetando mayúsculas y minúsculas -->
+            <!-- Recuerda cambiar "tu-imagen.jpg" por el nombre exacto de tu foto en GitHub -->
             <img src="tu-imagen.jpg" alt="Imagen Especial" class="imagen-mensaje">
             
             <button class="btn" id="close-modal">Guardar en el corazón</button>
         </div>
     </div>
 
-    <!-- Movimos tu script aquí al final para asegurar que lea la librería "THREE" correctamente -->
+    <!-- El script al final asegura que la librería THREE esté lista antes de ejecutarse -->
     <script src="script.js"></script>
 </body>
 </html>
