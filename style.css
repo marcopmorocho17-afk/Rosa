@@ -9,7 +9,7 @@ body {
     height: 100vh;
 }
 
-/* Contenedor del motor 3D */
+/* Lienzo de renderizado 3D de fondo */
 #canvas-3d-container {
     position: fixed;
     top: 0;
@@ -19,21 +19,21 @@ body {
     z-index: 1;
 }
 
-/* Capa de interfaz (títulos y botones) */
+/* Interfaz de textos flotantes */
 .main-container {
     position: absolute;
-    bottom: 40px; /* Movido abajo para dejar ver la rosa en el centro */
+    bottom: 35px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
     text-align: center;
     width: 90%;
     max-width: 600px;
-    pointer-events: none; /* Permite que los toques pasen al fondo 3D */
+    pointer-events: none; /* Permite que los arrastres pasen directamente al 3D */
 }
 
 h1 {
-    font-size: 36px;
+    font-size: 34px;
     color: #d4af37;
     margin: 10px 0 5px 0;
     text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
@@ -41,17 +41,17 @@ h1 {
 }
 
 .instruccion {
-    font-size: 14px;
+    font-size: 13px;
     color: #888;
     font-style: italic;
     margin: 0;
 }
 
-/* Campanita Dorada Flotante */
+/* Campanita Dorada */
 .bell-button {
     position: fixed;
-    top: 30px;
-    right: 30px;
+    top: 25px;
+    right: 25px;
     background: radial-gradient(circle, #d4af37 0%, #aa841c 100%);
     border: 2px solid #fff;
     font-size: 26px;
@@ -60,7 +60,7 @@ h1 {
     cursor: pointer;
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
     z-index: 100;
-    pointer-events: auto; /* Activa los clicks en la campana */
+    pointer-events: auto; /* Activa clicks sobre la campana */
     animation: ringIdle 4s ease-in-out infinite alternate;
     -webkit-tap-highlight-color: transparent;
 }
@@ -88,7 +88,7 @@ h1 {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(2, 2, 8, 0.85);
+    background: rgba(2, 2, 8, 0.88);
     backdrop-filter: blur(8px);
     z-index: 2000;
     display: flex;
@@ -129,14 +129,16 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Contenedor Adaptable de tu foto */
 .imagen-mensaje {
     display: block;
     width: 100%;
-    max-width: 240px;
+    max-width: 260px;
     height: auto;
-    margin: 0 auto 20px auto;
-    border-radius: 10px;
+    margin: 0 auto 25px auto;
+    border-radius: 12px;
     border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
 .btn {
@@ -150,9 +152,14 @@ h1 {
     font-family: inherit;
     font-size: 16px;
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    -webkit-tap-highlight-color: transparent;
 }
 
+/* 📱 Optimizaciones de visualización para celulares */
 @media (max-width: 480px) {
-    h1 { font-size: 26px; }
-    .bell-button { top: 20px; right: 20px; font-size: 22px; padding: 10px; }
+    h1 { font-size: 24px; }
+    .bell-button { top: 15px; right: 15px; font-size: 22px; padding: 10px; }
+    .modal-box { padding: 25px 15px; }
+    .parrafo-mensaje { font-size: 16px; }
+    .imagen-mensaje { max-width: 200px; margin-bottom: 20px; }
 }
