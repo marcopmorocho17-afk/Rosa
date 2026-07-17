@@ -2,43 +2,37 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Mi Rosa Encantada</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Para Mi Rosa Encantada 3D</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Cargamos Three.js desde un servidor seguro (CDN) -->
+    <script src="https://cloudflare.com"></script>
 </head>
 <body>
 
-    <!-- Fondo de estrellas, partículas y pétalos -->
-    <canvas id="particles-canvas"></canvas>
+    <!-- El contenedor donde se creará el universo 3D -->
+    <div id="canvas-3d-container"></div>
 
     <div class="main-container">
-        <!-- Contenedor del Domo y la Campana -->
-        <div class="interactive-area">
-            <div class="glass-dome">
-                <div class="rose-icon">🌹</div>
-            </div>
-            
-            <!-- Campanita dorada -->
-            <button class="bell-button" id="bell-btn" title="Descubre tu mensaje de hoy">
-                🔔
-            </button>
-        </div>
+        <!-- Campanita dorada flotante -->
+        <button class="bell-button" id="bell-btn" title="Descubre tu mensaje de hoy">
+            🔔
+        </button>
 
-        <h1 id="main-title">Para Mi Rosa Encantada</h1>
-        <p>Un mensaje de aliento te espera cada mañana bajo el cristal.</p>
+        <h1>Para Mi Rosa Encantada</h1>
+        <p class="instruccion">Toca y arrastra para girar el domo</p>
     </div>
 
-    <!-- Carta Mágica que se abre al tocar la campana -->
+    <!-- Carta Mágica con tu frase e imagen -->
     <div class="modal-overlay" id="message-modal">
         <div class="modal-box">
             <div class="sparkles">✨ 🌹 ✨</div>
-            <h3 id="modal-date">Mensaje de Hoy</h3>
+            <h3 id="modal-date">Un Pensamiento Para Ti</h3>
             <p id="daily-message-text" class="parrafo-mensaje">
-                <!-- El mensaje se cargará automáticamente con JavaScript -->
+                <!-- Se carga con JS -->
             </p>
             
-            <!-- Tu imagen aparecerá aquí. Recuerda cambiar "tu-imagen.jpg" por el nombre real de tu archivo -->
-            <img src="image.png" alt="Imagen Especial" class="imagen-mensaje">
+            <img src="tu-imagen.jpg" alt="Imagen Especial" class="imagen-mensaje">
             
             <button class="btn" id="close-modal">Guardar en el corazón</button>
         </div>
