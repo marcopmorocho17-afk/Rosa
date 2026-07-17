@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="style.css">
     <!-- Cargamos la librería tridimensional Three.js -->
     <!-- Reemplaza tu etiqueta de script de Three.js vieja por esta exacta -->
-<script src="https://cloudflare.com" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Enlace ultra seguro sin bloqueos CORS -->
+    <script src="https://unpkg.com"></script>
+    
+    <!-- Copia de seguridad automática: si el de arriba falla, carga este -->
+    <script>
+        if (typeof THREE === 'undefined') {
+            document.write('<script src="https://cloudflare.com"><\/script>');
+        }
+    </script>
 </head>
 <body>
 
