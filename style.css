@@ -3,105 +3,70 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Georgia', serif;
-    background: #020208;
+    background: #020205;
     color: #f5f5f5;
     overflow: hidden;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-#particles-canvas {
+/* Contenedor del motor 3D */
+#canvas-3d-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 5;
-    pointer-events: none;
+    z-index: 1;
 }
 
+/* Capa de interfaz (títulos y botones) */
 .main-container {
-    position: relative;
+    position: absolute;
+    bottom: 40px; /* Movido abajo para dejar ver la rosa en el centro */
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 10;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 90%;
+    max-width: 600px;
+    pointer-events: none; /* Permite que los toques pasen al fondo 3D */
 }
 
-.interactive-area {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
+h1 {
+    font-size: 36px;
+    color: #d4af37;
+    margin: 10px 0 5px 0;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    letter-spacing: 1px;
 }
 
-/* El Domo de Cristal */
-.glass-dome {
-    border: 3px solid rgba(212, 175, 55, 0.4);
-    border-bottom: 8px solid #d4af37;
-    border-radius: 200px 200px 15px 15px;
-    padding: 60px 70px;
-    background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
-    box-shadow: 0 0 50px rgba(255, 51, 102, 0.2), 
-                inset 0 20px 30px rgba(255, 255, 255, 0.15),
-                inset -10px 0 20px rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(1px);
-    animation: float 5s ease-in-out infinite;
+.instruccion {
+    font-size: 14px;
+    color: #888;
+    font-style: italic;
+    margin: 0;
 }
 
-.rose-icon {
-    font-size: 120px;
-    line-height: 1;
-    filter: drop-shadow(0 0 20px rgba(255, 51, 102, 0.7));
-}
-
-/* Campanita */
+/* Campanita Dorada Flotante */
 .bell-button {
-    position: absolute;
-    top: 15px;
-    right: -25px;
+    position: fixed;
+    top: 30px;
+    right: 30px;
     background: radial-gradient(circle, #d4af37 0%, #aa841c 100%);
     border: 2px solid #fff;
     font-size: 26px;
     padding: 12px;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
-    z-index: 20;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    z-index: 100;
+    pointer-events: auto; /* Activa los clicks en la campana */
     animation: ringIdle 4s ease-in-out infinite alternate;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.bell-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 25px #d4af37;
-}
-
-/* Animación de campana sonando al hacer click */
 .bell-button.ringing {
     animation: activeRing 0.15s ease-in-out infinite alternate;
-}
-
-h1 {
-    font-size: 42px;
-    color: #d4af37;
-    margin: 15px 0 10px 0;
-    text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-    letter-spacing: 1px;
-}
-
-p {
-    font-size: 18px;
-    color: #cccccc;
-    max-width: 500px;
-    line-height: 1.6;
-    margin: 0;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
 }
 
 @keyframes ringIdle {
@@ -123,15 +88,15 @@ p {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(2, 2, 8, 0.9);
-    backdrop-filter: blur(10px);
+    background: rgba(2, 2, 8, 0.85);
+    backdrop-filter: blur(8px);
     z-index: 2000;
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: opacity 0.4s ease;
 }
 
 .modal-overlay.active {
@@ -140,44 +105,38 @@ p {
 }
 
 .modal-box {
-    background: radial-gradient(circle at top, #160d24 0%, #08040d 100%);
+    background: radial-gradient(circle at top, #140b24 0%, #05020a 100%);
     border: 2px solid #d4af37;
-    padding: 40px 30px;
+    padding: 35px 25px;
     border-radius: 20px;
     width: 85%;
-    max-width: 450px;
+    max-width: 400px;
     text-align: center;
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.25), inset 0 0 20px rgba(255, 255, 255, 0.02);
-    transform: scale(0.8) translateY(20px);
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.modal-overlay.active .modal-box {
-    transform: scale(1) translateY(0);
-}
-
-.sparkles {
-    color: #d4af37;
-    font-size: 20px;
-    margin-bottom: 10px;
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
 }
 
 .modal-box h3 {
-    margin: 0 0 20px 0;
+    margin: 0 0 15px 0;
     color: #d4af37;
     font-size: 22px;
-    letter-spacing: 1px;
-    border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
-    padding-bottom: 10px;
 }
 
 .parrafo-mensaje {
-    font-size: 20px;
+    font-size: 18px;
     color: #fff;
-    line-height: 1.8;
+    line-height: 1.6;
     font-style: italic;
-    margin-bottom: 30px;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+}
+
+.imagen-mensaje {
+    display: block;
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+    margin: 0 auto 20px auto;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .btn {
@@ -191,31 +150,9 @@ p {
     font-family: inherit;
     font-size: 16px;
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-    transition: all 0.3s ease;
 }
 
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 25px #d4af37;
-    background: linear-gradient(45deg, #ffe58f, #d4af37);
-}
-
-/* Estilo para la imagen dentro de la carta mágica */
-.imagen-mensaje {
-    display: block;
-    width: 100%;
-    max-width: 280px;      /* Tamaño máximo ideal para que no rompa el diseño */
-    height: auto;          /* Mantiene la proporción original de la foto sin deformarla */
-    margin: 0 auto 25px auto; /* Centra la imagen y le da separación con el botón */
-    border-radius: 12px;   /* Bordes redondeados elegantes */
-    border: 1px solid rgba(212, 175, 55, 0.3); /* Un borde dorado sutil */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra suave para darle profundidad */
-}
-
-/* Ajuste de tamaño extra para pantallas muy pequeñas de celular */
 @media (max-width: 480px) {
-    .imagen-mensaje {
-        max-width: 200px;  /* Se encoge un poco más en pantallas mini */
-        margin-bottom: 20px;
-    }
+    h1 { font-size: 26px; }
+    .bell-button { top: 20px; right: 20px; font-size: 22px; padding: 10px; }
 }
