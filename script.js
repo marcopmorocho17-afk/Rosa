@@ -1,154 +1,249 @@
 // ==========================================
-// 🌹 MENSAJE ÚNICO Y ESPECIAL
+// 🌹 TU CONFIGURACIÓN DE MENSAJE
 // ==========================================
-const mensajeUnico = 'Holiiiiii espero que amanezcas con tanta felicidad como a la vez que te valla de lo mejor numca dejes a que te ponga tus límites que tu eres una chica super wuao eso Nat 🫰🍀';
+const mensajeUnico = 'Te deseo una bonita noche que duermas bien y que amanzezcas con energias 9:17pm';
 
-// ===================================================
-// LÓGICA DE FÍSICAS Y ANIMACIONES (Estrellas, Domo y Pétalos)
-// ===================================================
-const canvas = document.getElementById('particles-canvas');
-const ctx = canvas.getContext('2d');
+// ==========================================
+// 🎮 CONFIGURACIÓN DEL MOTOR EN 3D (Three.js)
+// ==========================================
+const container = document.getElementById('canvas-3d-container');
 
-let width = canvas.width = window.innerWidth;
-let height = canvas.height = window.innerHeight;
+// 1. Escena, Cámara y Renderizador
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x020205, 0.015); // Niebla mística de fondo
 
-const stars = [];
-const particles = [];
-const petals = [];
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 2, 14);
 
-const numStars = 100;
-const numParticles = 50;
-const numPetals = 12;
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+container.appendChild(renderer.domElement);
 
-for (let i = 0; i < numStars; i++) {
-    stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 1.5,
-        opacity: Math.random() * 0.8 + 0.2
-    });
+// Grupo principal que contendrá el domo y la rosa (para rotarlo con el mouse/dedo)
+const mainGroup = new THREE.Group();
+scene.add(mainGroup);
+
+// 2. Iluminación de la Escena
+const ambientLight = new THREE.AmbientLight(0x331122, 0.6);
+scene.add(ambientLight);
+
+const roseLight = new THREE.PointLight(0xff3366, 2, 8); // Luz mágica interna que emite la rosa
+roseLight.position.set(0, 1, 0);
+mainGroup.add(roseLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffe599, 1); // Luz dorada desde arriba
+directionalLight.position.set(2, 10, 3);
+scene.add(directionalLight);
+
+// ==========================================
+// 🛠️ MODELADO EN 3D DE LA ROSA Y EL RECIPIENTE
+// ==========================================
+
+// --- A. La Base Dorada del Recipiente ---
+const baseGeo = new THREE.CylinderGeometry(2.2, 2.3, 0.3, 32);
+const baseMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.2, metalness: 0.8 });
+const domeBase = new THREE.Mesh(baseGeo, baseMat);
+domeBase.position.y = -2.5;
+mainGroup.add(domeBase);
+
+// --- B. El Recipiente de Cristal (Domo) ---
+const glassGeo = new THREE.CylinderGeometry(2.0, 2.0, 4.5, 32, 1, true);
+const glassMat = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff, transparent: true, opacity: 0.15, roughness: 0.1,
+    transmission: 0.9, thickness: 0.5, side: THREE.DoubleSide
+});
+const glassCylinder = new THREE.Mesh(glassGeo, glassMat);
+glassCylinder.position.y = -0.1;
+mainGroup.add(glassCylinder);
+
+// Cúpula superior del domo
+const domeTopGeo = new THREE.SphereGeometry(2.0, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+const domeTop = new THREE.Mesh(domeTopGeo, glassMat);
+domeTop.position.y = 2.15;
+mainGroup.add(domeTop);
+
+// --- C. Creación de la Rosa en 3D ---
+const roseGroup = new THREE.Group();
+roseGroup.position.y = -2.3; // Apoyada sobre la base dorada
+mainGroup.add(roseGroup);
+
+// Tallo de la rosa
+const stemGeo = new THREE.CylinderGeometry(0.06, 0.06, 3.2, 16);
+const stemMat = new THREE.MeshStandardMaterial({ color: 0x1a3311, roughness: 0.6 });
+const stem = new THREE.Mesh(stemGeo, stemMat);
+stem.position.y = 1.6;
+roseGroup.add(stem);
+
+// Capullo / Pétalos de la rosa en 3D (Estructura esférica orgánica compleja)
+const flowerGroup = new THREE.Group();
+flowerGroup.position.y = 3.1;
+roseGroup.add(flowerGroup);
+
+const petalMat = new THREE.MeshStandardMaterial({ color: 0xb3001e, roughness: 0.5, metalness: 0.1 });
+
+// Capas de pétalos concéntricos
+for (let i = 0; i < 24; i++) {
+    const pGeo = new THREE.SphereGeometry(0.35, 16, 16, 0, Math.PI, 0, Math.PI / 2);
+    const pMesh = new THREE.Mesh(pGeo, petalMat);
+    
+    // Distribución esferoidal para simular una rosa real
+    const layer = Math.floor(i / 6);
+    const scaleFactor = 1 + layer * 0.15;
+    pMesh.scale.set(scaleFactor, scaleFactor * 1.4, scaleFactor * 0.6);
+    
+    pMesh.rotation.x = Math.PI / 2 + (Math.random() - 0.5) * 0.3;
+    pMesh.rotation.y = (i * (Math.PI / 3)) + (Math.random() * 0.2);
+    pMesh.position.setFromSphericalCoords(0.12 * layer, Math.PI / 4, pMesh.rotation.y);
+    
+    flowerGroup.add(pMesh);
 }
 
-for (let i = 0; i < numParticles; i++) {
-    particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 1.8 + 0.5,
-        speedY: Math.random() * 0.6 + 0.2,
-        speedX: (Math.random() - 0.5) * 0.2,
-        opacity: Math.random() * 0.5 + 0.4
-    });
+// Hojas del tallo
+const leafGeo = new THREE.ConeGeometry(0.3, 0.8, 16);
+const leafMat = new THREE.MeshStandardMaterial({ color: 0x224411, roughness: 0.5 });
+
+const leaf1 = new THREE.Mesh(leafGeo, leafMat);
+leaf1.position.set(0.3, 1.8, 0);
+leaf1.rotation.z = -Math.PI / 3;
+leaf1.scale.set(1, 1, 0.2);
+roseGroup.add(leaf1);
+
+const leaf2 = new THREE.Mesh(leafGeo, leafMat);
+leaf2.position.set(-0.3, 1.2, 0);
+leaf2.rotation.z = Math.PI / 3;
+leaf2.scale.set(1, 1, 0.2);
+roseGroup.add(leaf2);
+
+// ==========================================
+// ✨ SISTEMA DE PARTÍCULAS (Estrellas y Pétalos)
+// ==========================================
+
+// --- Fondo Estrellado ---
+const starsCount = 200;
+const starsGeo = new THREE.BufferGeometry();
+const starsPositions = new Float32Array(starsCount * 3);
+
+for(let i=0; i < starsCount * 3; i++) {
+    starsPositions[i] = (Math.random() - 0.5) * 40;
+}
+starsGeo.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+const starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.08, transparent: true, opacity: 0.7 });
+const starPoints = new THREE.Points(starsCount, starsMat);
+scene.add(starPoints);
+
+// --- Pétalos cayendo dentro del Cristal ---
+const petalParticlesCount = 15;
+const petalsData = [];
+const petalsGroup = new THREE.Group();
+mainGroup.add(petalsGroup);
+
+for (let i = 0; i < petalParticlesCount; i++) {
+    const pGeo = new THREE.BoxGeometry(0.12, 0.16, 0.02);
+    const pMesh = new THREE.Mesh(pGeo, petalMat);
+    
+    resetPetalPhysics(pMesh);
+    // Distribución inicial aleatoria en la altura para que no caigan todos al mismo tiempo
+    pMesh.position.y = -2.0 + Math.random() * 4.5; 
+    
+    petalsGroup.add(pMesh);
+    petalsData.push(pMesh);
 }
 
-function getRosePosition() {
-    const roseElement = document.querySelector('.rose-icon');
-    if (roseElement) {
-        const rect = roseElement.getBoundingClientRect();
-        return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 3 };
-    }
-    return { x: width / 2, y: height / 3 };
-}
-
-function getDomeBottom() {
-    const domeElement = document.querySelector('.glass-dome');
-    if (domeElement) {
-        return domeElement.getBoundingClientRect().bottom - 12;
-    }
-    return height / 2;
-}
-
-function createPetalFromRose() {
-    const rosePos = getRosePosition();
-    return {
-        x: rosePos.x + (Math.random() - 0.5) * 30,
-        y: rosePos.y,
-        size: Math.random() * 4 + 5,
-        speedY: Math.random() * 0.4 + 0.3,
-        speedX: (Math.random() - 0.5) * 0.4,
-        angle: Math.random() * Math.PI * 2,
-        spin: (Math.random() - 0.5) * 0.02,
-        opacity: 1
+function resetPetalPhysics(mesh) {
+    // Los pétalos se desprenden directamente desde el centro del capullo de la rosa en 3D
+    mesh.position.set((Math.random() - 0.5) * 0.3, 0.7, (Math.random() - 0.5) * 0.3);
+    mesh.userData = {
+        speedY: Math.random() * 0.015 + 0.01,
+        speedX: (Math.random() - 0.5) * 0.01,
+        speedZ: (Math.random() - 0.5) * 0.01,
+        rotX: Math.random() * 0.02,
+        rotY: Math.random() * 0.03,
+        wobbleSpeed: Math.random() * 0.05 + 0.02,
+        wobbleTime: Math.random() * 100
     };
 }
 
-for (let i = 0; i < numPetals; i++) {
-    const p = createPetalFromRose();
-    p.y += Math.random() * (getDomeBottom() - p.y);
-    petals.push(p);
-}
+// ==========================================
+// 🖱️ INTERACTIVIDAD CON MOUSE Y TOQUES TÁLCTILES
+// ==========================================
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
 
-window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+// Eventos para PC (Mouse)
+window.addEventListener('mousedown', () => isDragging = true);
+window.addEventListener('mouseup', () => isDragging = false);
+window.addEventListener('mousemove', (e) => {
+    const deltaMove = { x: e.offsetX - previousMousePosition.x, y: e.offsetY - previousMousePosition.y };
+    if (isDragging) {
+        mainGroup.rotation.y += deltaMove.x * 0.007; // Rotación horizontal del domo
+    }
+    previousMousePosition = { x: e.offsetX, y: e.offsetY };
 });
 
-function animate() {
-    ctx.clearRect(0, 0, width, height);
+// Eventos para Celular (Touch)
+window.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+});
+window.addEventListener('touchend', () => isDragging = false);
+window.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const deltaMove = { x: e.touches[0].clientX - previousMousePosition.x, y: e.touches[0].clientY - previousMousePosition.y };
+    mainGroup.rotation.y += deltaMove.x * 0.01; // Ajuste de sensibilidad táctil
+    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+});
 
-    stars.forEach(star => {
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fill();
-    });
+// Redimensionar pantalla dinámicamente
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
-    particles.forEach(p => {
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-        p.y += p.speedY;
-        p.x += p.speedX;
-        if (p.y > height) { p.y = -10; p.x = Math.random() * width; }
-    });
+// ==========================================
+// 🔄 BUCLE DE RENDERIZADO Y ANIMACIÓN
+// ==========================================
+function update() {
+    // Rotación automática muy lenta por defecto si nadie la toca
+    if (!isDragging) {
+        mainGroup.rotation.y += 0.002;
+    }
 
-    const domeBottom = getDomeBottom();
-
-    petals.forEach((pt, index) => {
-        ctx.save();
-        ctx.translate(pt.x, pt.y);
-        ctx.rotate(pt.angle);
+    // Animación física de los pétalos dentro del domo
+    petalsData.forEach(mesh => {
+        mesh.userData.wobbleTime += mesh.userData.wobbleSpeed;
         
-        let currentOpacity = pt.opacity;
-        const distanceToBase = domeBottom - pt.y;
-        if (distanceToBase < 30) {
-            currentOpacity = Math.max(0, distanceToBase / 30);
-        }
+        // Caída vertical y movimiento ondulante simulando resistencia de aire
+        mesh.position.y -= mesh.userData.speedY;
+        mesh.position.x += mesh.userData.speedX + Math.sin(mesh.userData.wobbleTime) * 0.005;
+        mesh.position.z += mesh.userData.speedZ;
 
-        ctx.fillStyle = `rgba(212, 0, 40, ${currentOpacity})`;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(-pt.size, -pt.size, -pt.size, pt.size, 0, pt.size * 1.5);
-        ctx.bezierCurveTo(pt.size, pt.size, pt.size, -pt.size, 0, 0);
-        ctx.fill();
-        ctx.restore();
+        // Rotación tridimensional del propio pétalo mientras cae
+        mesh.rotation.x += mesh.userData.rotX;
+        mesh.rotation.y += mesh.userData.rotY;
 
-        pt.y += pt.speedY;
-        pt.x += pt.speedX + Math.sin(pt.y / 20) * 0.15;
-        pt.angle += pt.spin;
-
-        if (pt.y >= domeBottom || currentOpacity <= 0) {
-            petals[index] = createPetalFromRose();
+        // Si el pétalo toca la base dorada (y = -2.3), renace arriba en el capullo
+        if (mesh.position.y <= -2.3) {
+            resetPetalPhysics(mesh);
         }
     });
 
-    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+    requestAnimationFrame(update);
 }
-animate();
+update();
 
-// ===================================================
-// LÓGICA DE ENTREGA DE TU MENSAJE
-// ===================================================
+// ==========================================
+// 🔔 INTERFAZ DE LA CARTA MAGICA
+// ==========================================
 const bellBtn = document.getElementById('bell-btn');
 const modal = document.getElementById('message-modal');
 const closeModal = document.getElementById('close-modal');
 const messageTextContainer = document.getElementById('daily-message-text');
-const modalDateTitle = document.getElementById('modal-date');
 
 bellBtn.addEventListener('click', () => {
-    modalDateTitle.innerText = `Un Pensamiento Para Ti`;
     messageTextContainer.innerText = mensajeUnico;
-    
     bellBtn.classList.add('ringing');
     
     setTimeout(() => {
