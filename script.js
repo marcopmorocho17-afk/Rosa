@@ -1,21 +1,35 @@
 // ==========================================
-// 🌹 CONFIGURACIÓN DE TU MENSAJE FIJO
+// 🌹 TU CONFIGURACIÓN DE MENSAJE
 // ==========================================
 const mensajeUnico = 'Te deseo una bonita noche que duermas bien y que amanzezcas con energias 9:17pm';
 
-// Controlar de forma segura que la librería Three.js esté cargada antes de dibujar
-window.addEventListener('load', () => {
+// Asegurar que la librería y el HTML estén listos al mismo tiempo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', verificarCarga);
+} else {
+    verificarCarga();
+}
+
+function verificarCarga() {
     if (typeof THREE === 'undefined') {
-        console.error("Three.js no se cargó a tiempo.");
-        return;
+        window.addEventListener('load', init3D);
+    } else {
+        init3D();
     }
-    init3D();
-});
+}
 
 function init3D() {
     const container = document.getElementById('canvas-3d-container');
+    
+    // Si el contenedor HTML aún no se crea, reintenta en un parpadeo
+    if (!container) {
+        setTimeout(init3D, 100);
+        return;
+    }
 
-    // 1. Crear Escena y Niebla Crepuscular
+    // ==========================================
+    // 🎮 CONFIGURACIÓN DEL MOTOR EN 3D (Three.js)
+    // ==========================================
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x020205, 0.015);
 
@@ -27,12 +41,11 @@ function init3D() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
-    // Grupo contenedor que se moverá con el mouse/dedo
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
     // ==========================================
-    // ☀️🌙 CONFIGURACIÓN LUMÍNICA DÍA / NOCHE
+    // ☀️🌙 SISTEMA DE ILUMINACIÓN DINÁMICA
     // ==========================================
     const ambientLight = new THREE.AmbientLight(0x1a0d1a, 0.4);
     scene.add(ambientLight);
@@ -45,13 +58,12 @@ function init3D() {
     moonLight.position.set(-15, 8, -5);
     scene.add(moonLight);
 
-    // Luz interna integrada en la flor (Brilla en la oscuridad)
     const roseGlowLight = new THREE.PointLight(0xff1a53, 3, 10);
     roseGlowLight.position.set(0, 0.8, 0);
     mainGroup.add(roseGlowLight);
 
     // ==========================================
-    // 🪐 MODELOS CELESTIALES (SOL Y LUNA)
+    // 🪐 ELEMENTOS CELESTIALES (SOL Y LUNA)
     // ==========================================
     const sunGeo = new THREE.SphereGeometry(1.2, 32, 32);
     const sunMat = new THREE.MeshBasicMaterial({ color: 0xffdd66 });
@@ -66,7 +78,7 @@ function init3D() {
     scene.add(moonMesh);
 
     // ==========================================
-    // 🛠️ CONSTRUCCIÓN GEOMÉTRICA DE LA ROSA EN EL CRISTAL
+    // 🛠️ MODELADO EN 3D DE LA ROSA Y EL RECIPIENTE
     // ==========================================
     const baseGeo = new THREE.CylinderGeometry(2.2, 2.3, 0.3, 32);
     const baseMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.2, metalness: 0.8 });
@@ -127,7 +139,7 @@ function init3D() {
     roseGroup.add(leaf2);
 
     // ==========================================
-    // ✨ PARTICULAS (Estrellas y Pétalos desde la rosa)
+    // ✨ SISTEMA DE PARTÍCULAS
     // ==========================================
     const starsCount = 200;
     const starsGeo = new THREE.BufferGeometry();
@@ -201,34 +213,30 @@ function init3D() {
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
-    // ==========================================
-    // 🔄 BUCLE INTEGRADO DE RENDERING Y CICLOS DE LUZ
+
+        // ==========================================
+    // 🔄 BUCLE DE ANIMACIÓN Y TRANSICIÓN DE LUZ
     // ==========================================
     function update() {
         if (!isDragging) {
-            mainGroup.rotation.y += 0.002; // Giro automático lento
+            mainGroup.rotation.y += 0.002;
         }
 
-        // Medir el ángulo de rotación para alternar entre el sol y la luna
         const angle = mainGroup.rotation.y % (Math.PI * 2);
         const dayFactor = (Math.cos(angle) + 1) / 2; 
         const nightFactor = 1 - dayFactor;
 
-        // Modulación física de las intensidades
         sunLight.intensity = dayFactor * 1.8;
         moonLight.intensity = nightFactor * 0.6;
         ambientLight.intensity = (dayFactor * 0.5) + (nightFactor * 0.1);
-        roseGlowLight.intensity = (nightFactor * 4.5) + (dayFactor * 0.5); // Rosa incandescente en la noche
+        roseGlowLight.intensity = (nightFactor * 4.5) + (dayFactor * 0.5);
         
-        // Transición de tonalidad del firmamento
         const skyColor = new THREE.Color(0x020205).lerp(new THREE.Color(0x1a263a), dayFactor);
         renderer.setClearColor(skyColor);
         scene.fog.color.copy(skyColor);
 
-        // Opacidad de estrellas nocturnas
         starsMat.opacity = nightFactor * 0.8;
 
-        // Comportamiento cinemático de los pétalos cayendo
         petalsData.forEach(mesh => {
             mesh.userData.wobbleTime += mesh.userData.wobbleSpeed;
             mesh.position.y -= mesh.userData.speedY;
@@ -271,7 +279,4 @@ closeModal.addEventListener('click', () => {
 });
 
 
-
     
-
-  
